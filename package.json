@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "snowpack dev",    
-    "build": "npm i"
+    "start": "snowpack dev"
   },
   "keywords": [],
   "author": "",
