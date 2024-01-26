@@ -1,7 +1,14 @@
-### Cliente Rest 
-Es un cleinte hecho en Node.js para consumir apis
+ # HTTP Request Visualizer
 
-Instalar dependencias
+This tool allows you to visualize HTTP requests and responses in a user-friendly interface. It provides a form to enter the request details, including the URL, method, query parameters, request headers, and request body. The tool then makes the request and displays the response, including the status code, response time, response size, response headers, and response body.
+
+## Features
+
+* **Easy to use:** The tool is designed to be easy to use, even for those who are not familiar with HTTP requests.
+* **Visualize requests and responses:** The tool provides a visual representation of the request and response, making it easy to understand the flow of data.
+* **Inspect response details:** The tool allows you to inspect the details of the response, including the status code, response time, response size, response headers, and response body.
+
+## Local installation
  ```
 npm i
 ```
@@ -15,14 +22,17 @@ npm start
     <img src="readMeImages/restClientSimpleTest.gif"/>     
 </p>
 
-Ya desde este cliente se pueden consumir cualquier API REST que cuente con CORS, cabe mencionar que se pueden consumir apis de un servidor remoto, local, o de una maquina virtual
+From this client, you can now consume any REST API that supports CORS. It's worth mentioning that you can consume APIs from a remote server, local server, or a virtual machine.
 
-los endpoints suelen ser de este estilo 
+The endpoints typically follow this style:
 
 Endpoints:
  ```
-http://192.168.60.3:5000/books | http:<MACHINE IP>:<PORT>/books
+http://192.168.60.3:5000/books | http:<MACHINE IP>:<PORT>/<ROUTE>
 ```
 ```
-http://192.168.60.3:5000/books/:id | http:<MACHINE IP>:<PORT>/books/:id
+http://192.168.60.3:5000/books/:id | http:<MACHINE IP>:<PORT>/<ROUTE>/:id
+```
+```
+https://jsonplaceholder.typicode.com/todos/4
 ```
