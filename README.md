@@ -1,4 +1,4 @@
- # HTTP Request Visualizer
+# HTTP Request Visualizer 
 
 This tool allows you to visualize HTTP requests and responses in a user-friendly interface. It provides a form to enter the request details, including the URL, method, query parameters, request headers, and request body. The tool then makes the request and displays the response, including the status code, response time, response size, response headers, and response body.
 
@@ -15,14 +15,16 @@ npm i
 
 Correr Cliente
  ```
-npm start
+npm run dev
 ```
-### Preview
+
+
+<!-- ### Preview
 <p aling="center">
     <img src="readMeImages/restClientSimpleTest.gif"/>     
 </p>
-
-From this client, you can now consume any REST API that supports CORS. It's worth mentioning that you can consume APIs from a remote server, local server, or a virtual machine.
+ -->
+From this client, you can now consume any REST API that with CORS. It's worth mentioning that you can consume APIs from a remote server, local server, or a virtual machine.
 
 The endpoints typically follow this style:
 
