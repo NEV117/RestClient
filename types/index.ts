@@ -13,16 +13,20 @@ export const httpMethods = [
   { key: "HEAD", label: "HEAD" },
   { key: "OPTIONS", label: "OPTIONS" },
 ];
-
-
- export const jsonObject = {
+export const authTypes = [
+  { key: "no_auth", label: "No Auth" },
+  { key: "basic_auth", label: "Basic Auth" },
+  { key: "bearer_token", label: "Bearer Token" },
+];
+export const jsonObject = {
   date: "2024-04-10",
   hour: "09:00 AM",
   serviceId: 1,
   barberId: 1,
   barberShopNit: "Mario's",
 };
- export const jsonString = JSON.stringify(jsonObject, null, 2);
+
+export const jsonString = JSON.stringify(jsonObject, null, 2);
 
 export type SelectItemColor =
   | "success"
@@ -39,7 +43,9 @@ export type HttpMethod =
   | "DELETE"
   | "HEAD"
   | "OPTIONS";
+
 // Mapeo de métodos HTTP a colores
+
 export const httpMethodColors: Record<HttpMethod, SelectItemColor> = {
   GET: "success",
   POST: "warning",

@@ -1,4 +1,4 @@
-# HTTP Request Visualizer 
+# HTTP Request Visualizer
 
 This tool allows you to visualize HTTP requests and responses in a user-friendly interface. It provides a form to enter the request details, including the URL, method, query parameters, request headers, and request body. The tool then makes the request and displays the response, including the status code, response time, response size, response headers, and response body.
 
@@ -9,15 +9,16 @@ This tool allows you to visualize HTTP requests and responses in a user-friendly
 * **Inspect response details:** The tool allows you to inspect the details of the response, including the status code, response time, response size, response headers, and response body.
 
 ## Local installation
- ```
+
+ ```bash
 npm i
 ```
 
 Correr Cliente
- ```
+
+ ```bash
 npm run dev
 ```
-
 
 <!-- ### Preview
 <p aling="center">
@@ -29,12 +30,15 @@ From this client, you can now consume any REST API that with CORS. It's worth me
 The endpoints typically follow this style:
 
 Endpoints:
- ```
+
+ ```bash
 http://192.168.60.3:5000/books | http:<MACHINE IP>:<PORT>/<ROUTE>
 ```
-```
+
+```bash
 http://192.168.60.3:5000/books/:id | http:<MACHINE IP>:<PORT>/<ROUTE>/:id
 ```
-```
+
+```bash
 https://jsonplaceholder.typicode.com/todos/4
 ```

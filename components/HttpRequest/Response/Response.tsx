@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
 import CodeMirror from "@uiw/react-codemirror";
+import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 
 import { jsonString } from "@/types";
-import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 
 export const Response = () => {
   const { theme } = useTheme();
@@ -15,7 +15,7 @@ export const Response = () => {
 
   useEffect(() => {
     const updateMaxHeight = () => {
-      setMaxHeight(window.innerHeight - 630);
+      setMaxHeight(window.innerHeight - 714);
     };
 
     // Set initial max height on mount

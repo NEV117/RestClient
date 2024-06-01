@@ -18,9 +18,11 @@ import { javascript } from "@codemirror/lang-javascript";
 
 import { Params } from "./Params/Params";
 import { Headers } from "./Headers/Headers";
+import { Response } from "./Response/Response";
+import { Auth } from "./Auth/Auth";
 
 import { HttpMethod, httpMethodColors, httpMethods, jsonString } from "@/types";
-import { Response } from "./Response/Response";
+import { CheckIcon } from "@/public/svg/cheackbox";
 
 export const HttpRequestForm = () => {
   const { theme } = useTheme();
@@ -60,11 +62,10 @@ export const HttpRequestForm = () => {
             <>
               <Select
                 classNames={{
-                  label: "group-data-[filled=true]:-translate-y-5",
+                  label: "group-data-[filled=true]:-translate-y-5 pt-2",
                   base: ["w-[150px]", "pl-0"],
                   innerWrapper: ["!pl-0", "!pt-0"],
                   trigger: ["pt-2"],
-                  label: ["pt-2"],
                   value: ["pt-3"],
                 }}
                 defaultSelectedKeys={["GET"]}
@@ -89,7 +90,14 @@ export const HttpRequestForm = () => {
       </div>
       <div className="flex w-full flex-col pt-2">
         <Tabs aria-label="Options">
-          <Tab key="params" title="Params">
+          <Tab
+            key="params"
+            title={
+              <div className="flex flex-row items-center gap-1">
+                <p>Params</p><CheckIcon color="succes" size={8} />
+              </div>
+            }
+          >
             <Card>
               <CardBody className="max-h-[450px]">
                 <Params />
@@ -99,10 +107,7 @@ export const HttpRequestForm = () => {
           <Tab key="authorization" title="Authorization">
             <Card>
               <CardBody>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur.
+                <Auth/>
               </CardBody>
             </Card>
           </Tab>

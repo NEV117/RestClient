@@ -80,7 +80,7 @@ export const Headers = () => {
           </Button>
         </div>
         <br />
-        <Table aria-label="Dynamic table with user-added rows" className="min-w-[500px]" isCompact>
+        <Table isCompact aria-label="Dynamic table with user-added rows" className="min-w-[500px]">
           <TableHeader>
             <TableColumn>Key</TableColumn>
             <TableColumn>Value</TableColumn>
