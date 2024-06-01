@@ -1,4 +1,7 @@
- # HTTP Request Visualizer
+ > [!NOTE]  
+> This is an old client version, for the most recent one check the main branch.
+
+ # HTTP Request Visualizer 
 
 This tool allows you to visualize HTTP requests and responses in a user-friendly interface. It provides a form to enter the request details, including the URL, method, query parameters, request headers, and request body. The tool then makes the request and displays the response, including the status code, response time, response size, response headers, and response body.
 
