@@ -15,62 +15,12 @@ import CodeMirror from "@uiw/react-codemirror";
 import { useTheme } from "next-themes";
 import { githubLight, githubDark } from "@uiw/codemirror-theme-github";
 import { javascript } from "@codemirror/lang-javascript";
+
 import { Params } from "./Params/Params";
-export const httpMethods = [
-  { key: "GET", label: "GET" },
-  { key: "POST", label: "POST" },
-  { key: "PUT", label: "PUT" },
-  { key: "PATCH", label: "PATCH" },
-  { key: "DELETE", label: "DELETE" },
-  { key: "HEAD", label: "HEAD" },
-  { key: "OPTIONS", label: "OPTIONS" },
-];
+import { Headers } from "./Headers/Headers";
 
-/* // Mapeo de métodos HTTP a colores
-const httpMethodColors = {
-  GET: "success",
-  POST: "warning",
-  PUT: "info",
-  PATCH: "info",
-  DELETE: "danger",
-  HEAD: "default",
-  OPTIONS: "default",
-}; */
-
-const jsonObject = {
-  date: "2024-04-10",
-  hour: "09:00 AM",
-  serviceId: 1,
-  barberId: 1,
-  barberShopNit: "Mario's",
-};
-const jsonString = JSON.stringify(jsonObject, null, 2);
-
-type SelectItemColor =
-  | "success"
-  | "warning"
-  | "danger"
-  | "default"
-  | "primary"
-  | "secondary";
-type HttpMethod =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "PATCH"
-  | "DELETE"
-  | "HEAD"
-  | "OPTIONS";
-// Mapeo de métodos HTTP a colores
-const httpMethodColors: Record<HttpMethod, SelectItemColor> = {
-  GET: "success",
-  POST: "warning",
-  PUT: "primary",
-  PATCH: "secondary",
-  DELETE: "danger",
-  HEAD: "primary",
-  OPTIONS: "secondary",
-};
+import { HttpMethod, httpMethodColors, httpMethods, jsonString } from "@/types";
+import { Response } from "./Response/Response";
 
 export const HttpRequestForm = () => {
   const { theme } = useTheme();
@@ -133,7 +83,7 @@ export const HttpRequestForm = () => {
           }
         />
 
-        <Button className="h-[56px]" color="primary" >
+        <Button className="h-[56px]" color="primary">
           SEND
         </Button>
       </div>
@@ -142,7 +92,7 @@ export const HttpRequestForm = () => {
           <Tab key="params" title="Params">
             <Card>
               <CardBody className="max-h-[450px]">
-                <Params/>
+                <Params />
               </CardBody>
             </Card>
           </Tab>
@@ -159,17 +109,24 @@ export const HttpRequestForm = () => {
           <Tab key="headers" title="Headers">
             <Card>
               <CardBody>
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                qui officia deserunt mollit anim id est laborum.
+                <Headers />
               </CardBody>
             </Card>
           </Tab>
           <Tab key="body" title="Body">
             <Card>
               <CardBody>
-                <div style={{ borderRadius: "10px", overflow: "hidden" }}>
+                <div
+                  style={{
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                    minHeight: "238px",
+                    maxHeight: "238px",
+                  }}
+                >
                   <CodeMirror
                     extensions={[javascript({ jsx: true })]}
+                    height="238px"
                     theme={Theme2}
                     value={jsonString}
                   />
@@ -183,13 +140,7 @@ export const HttpRequestForm = () => {
         <h1 className="pb-2">Response:</h1>
         <Card>
           <CardBody>
-            <div style={{ borderRadius: "10px", overflow: "hidden" }}>
-              <CodeMirror
-                extensions={[javascript({ jsx: true })]}
-                theme={Theme2}
-                value={jsonString}
-              />
-            </div>
+            <Response />
           </CardBody>
         </Card>
       </div>
