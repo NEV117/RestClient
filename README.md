@@ -24,7 +24,7 @@ npm run dev
 <p aling="center">
     <img src="readMeImages/restClientSimpleTest.gif"/>     
 </p>
- -->
+   -->
 From this client, you can now consume any REST API that with CORS. It's worth mentioning that you can consume APIs from a remote server, local server, or a virtual machine.
 
 The endpoints typically follow this style:
