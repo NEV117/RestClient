@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -12,15 +12,21 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
-export const Headers = () => {
-    const [rows, setRows] = useState([
-      {
-        id: "1",
-        key: "",
-        value: "",
-        description: "",
-      },
-    ]);
+import { HeaderRow } from "@/types";
+
+type HeadersProps = {
+  data: HeaderRow[]; // Prop para recibir los datos de los parámetros
+  onHeadersChange: (params: HeaderRow[]) => void;
+};
+
+
+export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
+  const [rows, setRows] = useState(data); // Inicializar el estado con los datos recibidos
+
+  useEffect(() => {
+    onHeadersChange(rows);
+  }, [rows, onHeadersChange]);
+
     
     const addRow = () => {
       const newRow = {
@@ -129,9 +135,6 @@ export const Headers = () => {
             ))}
           </TableBody>
         </Table>
-        <Button className="max-w-[140px]" color="success" size="sm" onClick={handleAccept}>
-          Aceptar
-        </Button>
       </>
     );
   };

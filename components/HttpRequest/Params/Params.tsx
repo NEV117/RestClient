@@ -57,10 +57,6 @@ export const Params: React.FC<ParamsProps> = ({ data, onParamsChange }) => {
     setRows(updatedRows);
   };
 
-  const handleAccept = () => {
-    console.log("Input values:", rows);
-  };
-  
   return (
     <>
       <div className="flex flex-row items-center gap-2">
@@ -132,9 +128,6 @@ export const Params: React.FC<ParamsProps> = ({ data, onParamsChange }) => {
           ))}
         </TableBody>
       </Table>
-      <Button className="max-w-[140px]" color="success" size="sm" onClick={handleAccept}>
-        Accept
-      </Button>
     </>
   );
 };

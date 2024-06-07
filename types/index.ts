@@ -61,4 +61,11 @@ export type ParamRow = {
   key: string;
   value: string;
   description: string;
-}
+};
+
+export type HeaderRow = {
+  id: string;
+  key: string;
+  value: string;
+  description: string;
+};

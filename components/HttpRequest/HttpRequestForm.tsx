@@ -22,45 +22,75 @@ import { Headers } from "./Headers/Headers";
 import { Response } from "./Response/Response";
 import { Auth } from "./Auth/Auth";
 
-import { HttpMethod, ParamRow, httpMethodColors, httpMethods, jsonString } from "@/types";
+import {
+  HeaderRow,
+  HttpMethod,
+  ParamRow,
+  httpMethodColors,
+  httpMethods,
+  jsonString,
+} from "@/types";
 import { CheckIcon } from "@/public/svg/cheackbox";
 
 export const HttpRequestForm = () => {
   const { theme } = useTheme();
-  const Theme2 = theme === "dark" ? githubDark : githubLight;  
-  const [activeTabs, setActiveTabs] = useState(["params"]);
-  const [paramsData, setParamsData] = useState<ParamRow[]>([{
-    id: "1",
-    key: "",
-    value: "",
-    description: ""
-  }]);
-  const [paramsDataBackup, setParamsDataBackup] = useState<ParamRow[]>([]);
+  const Theme2 = theme === "dark" ? githubDark : githubLight;
+  const [paramsData, setParamsData] = useState<ParamRow[]>([
+    {
+      id: "1",
+      key: "",
+      value: "",
+      description: "",
+    },
+  ]);
+  const [headersData, setHeadersData] = useState<HeaderRow[]>([
+    {
+      id: "1",
+      key: "",
+      value: "",
+      description: "",
+    },
+  ]);
 
-  const handleParamsChange = (updatedParams: SetStateAction<{ id: string; key: string; value: string; description: string; }[]>) => {
+  const [jsonData, setJsonData] = useState(jsonString);
+
+
+  const paramsFilled = paramsData.some(
+    (param) =>
+      param.key !== "" || param.value !== "" || param.description !== ""
+  );
+
+  const headersFilled = headersData.some(
+    (header) =>
+      header.key !== "" || header.value !== "" || header.description !== ""
+  );
+  
+  const handleParamsChange = (
+    updatedParams: SetStateAction<
+      { id: string; key: string; value: string; description: string }[]
+    >
+  ) => {
     setParamsData(updatedParams);
   };
 
-  const paramsFilled = paramsData.some(param => param.key !== "" || param.value !== "" || param.description !== "");
+  const handleHeadersChange = (
+    updatedHeaders: SetStateAction<
+      { id: string; key: string; value: string; description: string }[]
+    >
+  ) => {
+    setHeadersData(updatedHeaders);
+  };
+
+  const handleCodeMirrorChange = (value: string) => {
+    setJsonData(value); // Actualiza jsonString con el nuevo valor
+  };
   
-  const toggleTab = (tabKey: string) => {
-    setActiveTabs(prevTabs => {
-      if (prevTabs.includes(tabKey)) {
-        return prevTabs.filter(key => key !== tabKey);
-      } else {
-        return [...prevTabs, tabKey];
-      }
-    });
+  const handleSend = () => {
+    console.log("Params Data:", paramsData);
+    console.log("Headers Data:", headersData);
+    console.log("Json Data:", jsonData);
+    
   };
-
-  const isTabActive = (tabKey: string) => {
-    return activeTabs.includes(tabKey);
-  };
-
-  if (isTabActive("params") && paramsDataBackup.length > 0) {
-    setParamsData(paramsDataBackup);
-    setParamsDataBackup([]);
-  }
 
   return (
     <>
@@ -118,46 +148,68 @@ export const HttpRequestForm = () => {
           }
         />
 
-        <Button className="h-[56px]" color="primary">
+        <Button className="h-[56px]" color="primary" onClick={handleSend}>
           SEND
         </Button>
       </div>
       <div className="flex w-full flex-col pt-2">
         <Tabs aria-label="Options">
-        <Tab
+          <Tab
             key="params"
             title={
               <div className="flex flex-row items-center gap-1">
                 <p>Params</p>
-                {paramsFilled && activeTabs.includes("params") && <CheckIcon color="success" size={8} />}
+                {paramsFilled && (
+                  <CheckIcon color="success" size={8} />
+                )}
               </div>
             }
-            onClick={() => toggleTab("params")}
           >
             <Card>
               <CardBody className="max-h-[450px]">
-              <Params data={paramsData} onParamsChange={handleParamsChange} />
+                <Params data={paramsData} onParamsChange={handleParamsChange} />
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="authorization" title="Authorization" 
-            onClick={() => toggleTab("authorization")}>
+          <Tab
+            key="authorization"
+            title="Authorization"
+          >
             <Card>
               <CardBody>
-                <Auth/>
+                <Auth />
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="headers" title="Headers" 
-            onClick={() => toggleTab("headers")}>
+          <Tab
+            key="headers"
+            title={
+              <div className="flex flex-row items-center gap-1">
+                <p>Headers</p>
+                {headersFilled && (
+                  <CheckIcon color="success" size={8} />
+                )}
+              </div>
+            }
+          >
             <Card>
               <CardBody>
-                <Headers />
+                <Headers
+                  data={headersData}
+                  onHeadersChange={handleHeadersChange}
+                />
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="body" title="Body" 
-            onClick={() => toggleTab("body")}>
+          <Tab key="body" 
+            title={
+              <div className="flex flex-row items-center gap-1">
+                <p>Body</p>
+                {jsonString && (
+                  <CheckIcon color="success" size={8} />
+                )}
+              </div>
+            }>
             <Card>
               <CardBody>
                 <div
@@ -172,7 +224,8 @@ export const HttpRequestForm = () => {
                     extensions={[javascript({ jsx: true })]}
                     height="238px"
                     theme={Theme2}
-                    value={jsonString}
+                    value={jsonData}
+                    onChange={handleCodeMirrorChange}
                   />
                 </div>
               </CardBody>
