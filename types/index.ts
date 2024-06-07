@@ -55,3 +55,10 @@ export const httpMethodColors: Record<HttpMethod, SelectItemColor> = {
   HEAD: "primary",
   OPTIONS: "secondary",
 };
+
+export type ParamRow = {
+  id: string;
+  key: string;
+  value: string;
+  description: string;
+}

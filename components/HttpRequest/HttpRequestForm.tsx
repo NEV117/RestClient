@@ -15,18 +15,52 @@ import CodeMirror from "@uiw/react-codemirror";
 import { useTheme } from "next-themes";
 import { githubLight, githubDark } from "@uiw/codemirror-theme-github";
 import { javascript } from "@codemirror/lang-javascript";
+import { SetStateAction, useState } from "react";
 
 import { Params } from "./Params/Params";
 import { Headers } from "./Headers/Headers";
 import { Response } from "./Response/Response";
 import { Auth } from "./Auth/Auth";
 
-import { HttpMethod, httpMethodColors, httpMethods, jsonString } from "@/types";
+import { HttpMethod, ParamRow, httpMethodColors, httpMethods, jsonString } from "@/types";
 import { CheckIcon } from "@/public/svg/cheackbox";
 
 export const HttpRequestForm = () => {
   const { theme } = useTheme();
-  const Theme2 = theme === "dark" ? githubDark : githubLight;
+  const Theme2 = theme === "dark" ? githubDark : githubLight;  
+  const [activeTabs, setActiveTabs] = useState(["params"]);
+  const [paramsData, setParamsData] = useState<ParamRow[]>([{
+    id: "1",
+    key: "",
+    value: "",
+    description: ""
+  }]);
+  const [paramsDataBackup, setParamsDataBackup] = useState<ParamRow[]>([]);
+
+  const handleParamsChange = (updatedParams: SetStateAction<{ id: string; key: string; value: string; description: string; }[]>) => {
+    setParamsData(updatedParams);
+  };
+
+  const paramsFilled = paramsData.some(param => param.key !== "" || param.value !== "" || param.description !== "");
+  
+  const toggleTab = (tabKey: string) => {
+    setActiveTabs(prevTabs => {
+      if (prevTabs.includes(tabKey)) {
+        return prevTabs.filter(key => key !== tabKey);
+      } else {
+        return [...prevTabs, tabKey];
+      }
+    });
+  };
+
+  const isTabActive = (tabKey: string) => {
+    return activeTabs.includes(tabKey);
+  };
+
+  if (isTabActive("params") && paramsDataBackup.length > 0) {
+    setParamsData(paramsDataBackup);
+    setParamsDataBackup([]);
+  }
 
   return (
     <>
@@ -90,35 +124,40 @@ export const HttpRequestForm = () => {
       </div>
       <div className="flex w-full flex-col pt-2">
         <Tabs aria-label="Options">
-          <Tab
+        <Tab
             key="params"
             title={
               <div className="flex flex-row items-center gap-1">
-                <p>Params</p><CheckIcon color="succes" size={8} />
+                <p>Params</p>
+                {paramsFilled && activeTabs.includes("params") && <CheckIcon color="success" size={8} />}
               </div>
             }
+            onClick={() => toggleTab("params")}
           >
             <Card>
               <CardBody className="max-h-[450px]">
-                <Params />
+              <Params data={paramsData} onParamsChange={handleParamsChange} />
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="authorization" title="Authorization">
+          <Tab key="authorization" title="Authorization" 
+            onClick={() => toggleTab("authorization")}>
             <Card>
               <CardBody>
                 <Auth/>
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="headers" title="Headers">
+          <Tab key="headers" title="Headers" 
+            onClick={() => toggleTab("headers")}>
             <Card>
               <CardBody>
                 <Headers />
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="body" title="Body">
+          <Tab key="body" title="Body" 
+            onClick={() => toggleTab("body")}>
             <Card>
               <CardBody>
                 <div
