@@ -69,3 +69,10 @@ export type HeaderRow = {
   value: string;
   description: string;
 };
+
+export type AuthData = {
+  authType: string;
+  username: string;
+  password: string;
+  token: string;
+};

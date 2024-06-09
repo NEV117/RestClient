@@ -23,6 +23,7 @@ import { Response } from "./Response/Response";
 import { Auth } from "./Auth/Auth";
 
 import {
+  AuthData,
   HeaderRow,
   HttpMethod,
   ParamRow,
@@ -51,6 +52,15 @@ export const HttpRequestForm = () => {
       description: "",
     },
   ]);
+  
+  const [authData, setAuthData] = useState<AuthData>(
+    {
+      authType: "",
+      username: "",
+      password: "",
+      token: ""
+    },
+  );
 
   const [jsonData, setJsonData] = useState(jsonString);
 
@@ -64,6 +74,10 @@ export const HttpRequestForm = () => {
     (header) =>
       header.key !== "" || header.value !== "" || header.description !== ""
   );
+
+  const authFieldsFilled = 
+  (authData.authType === "basic_auth" && (authData.username !== "" || authData.password !== "")) ||
+  (authData.authType === "bearer_token" && authData.token !== "");
   
   const handleParamsChange = (
     updatedParams: SetStateAction<
@@ -81,6 +95,14 @@ export const HttpRequestForm = () => {
     setHeadersData(updatedHeaders);
   };
 
+  const handleAuthChange = (
+    updatedAuth: SetStateAction<
+      { authType: string; username: string; password: string; token: string }
+    >
+  ) => {
+    setAuthData(updatedAuth);
+  };
+
   const handleCodeMirrorChange = (value: string) => {
     setJsonData(value); // Actualiza jsonString con el nuevo valor
   };
@@ -89,6 +111,7 @@ export const HttpRequestForm = () => {
     console.log("Params Data:", paramsData);
     console.log("Headers Data:", headersData);
     console.log("Json Data:", jsonData);
+    console.log("auth Data:", authData);
     
   };
 
@@ -173,11 +196,17 @@ export const HttpRequestForm = () => {
           </Tab>
           <Tab
             key="authorization"
-            title="Authorization"
-          >
+            title={
+              <div className="flex flex-row items-center gap-1">
+                <p>Authorization</p>
+                {authFieldsFilled && (
+                  <CheckIcon color="success" size={8} />
+                )}
+              </div>
+            }>
             <Card>
               <CardBody>
-                <Auth />
+                <Auth data={authData} onParamsChange={handleAuthChange} />
               </CardBody>
             </Card>
           </Tab>
@@ -205,7 +234,7 @@ export const HttpRequestForm = () => {
             title={
               <div className="flex flex-row items-center gap-1">
                 <p>Body</p>
-                {jsonString && (
+                {jsonData && (
                   <CheckIcon color="success" size={8} />
                 )}
               </div>
