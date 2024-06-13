@@ -14,7 +14,7 @@ This tool allows you to visualize HTTP requests and responses in a user-friendly
 npm i
 ```
 
-Correr Cliente
+Run Client
 
  ```bash
 npm run dev
