@@ -6,9 +6,16 @@ import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
 import CodeMirror from "@uiw/react-codemirror";
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 
-import { jsonString } from "@/types";
 
-export const Response = () => {
+type ResponseProps = {
+  data: any | undefined;
+  status: number | undefined;
+  time: number | undefined;
+  size: number | undefined;
+  headers: Record<string, string> | undefined;
+};
+
+export const Response = ({ data, status, time, size, headers }: ResponseProps) => {
   const { theme } = useTheme();
   const Theme2 = theme === "dark" ? githubDark : githubLight;
   const [maxHeight, setMaxHeight] = useState(0);
@@ -32,9 +39,11 @@ export const Response = () => {
 
   return (
     <>
-    <div className="flex flex-row gap-4 text-sm pb-2">
-      <p>Status: 200 </p> <p>Time: 22ms </p> <p>Size: 2Kb </p>
-    </div>
+      <div className="flex flex-row gap-4 text-sm pb-2">
+        <p>Status: {status}</p> 
+        <p>Time: {time}ms</p> 
+        <p>Size: {size}Kb</p>
+      </div>
       <Tabs aria-label="Options">
         <Tab key="body" title="Body">
           <Card>
@@ -47,9 +56,10 @@ export const Response = () => {
                 }}
               >
                 <CodeMirror
+                  readOnly
                   extensions={[javascript({ jsx: true })]}
                   theme={Theme2}
-                  value={jsonString}
+                  value={JSON.stringify(data, null, 2)}
                 />
               </div>
             </CardBody>
@@ -58,10 +68,20 @@ export const Response = () => {
         <Tab key="headers" title="Headers">
           <Card>
             <CardBody>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.
+              <div
+                style={{
+                  borderRadius: "10px",
+                  overflow: "auto",
+                  maxHeight: `${maxHeight}px`,
+                }}
+              >
+                <CodeMirror
+                  readOnly
+                  extensions={[javascript({ jsx: true })]}
+                  theme={Theme2}
+                  value={JSON.stringify(headers, null, 2)}
+                />
+              </div>
             </CardBody>
           </Card>
         </Tab>

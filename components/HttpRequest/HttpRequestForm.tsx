@@ -27,11 +27,13 @@ import {
   HeaderRow,
   HttpMethod,
   ParamRow,
+  ResponseState,
   httpMethodColors,
   httpMethods,
   jsonString,
 } from "@/types";
 import { CheckIcon } from "@/public/svg/cheackbox";
+import { makeHttpRequest } from "@/actions";
 
 export const HttpRequestForm = () => {
   const { theme } = useTheme();
@@ -52,17 +54,26 @@ export const HttpRequestForm = () => {
       description: "",
     },
   ]);
-  
-  const [authData, setAuthData] = useState<AuthData>(
-    {
-      authType: "",
-      username: "",
-      password: "",
-      token: ""
-    },
-  );
+
+  const [authData, setAuthData] = useState<AuthData>({
+    authType: "",
+    username: "",
+    password: "",
+    token: "",
+  });
 
   const [jsonData, setJsonData] = useState(jsonString);
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState<ResponseState>(null);
+  const [error, setError] = useState(null);
+  const [url, setUrl] = useState("");
+  const [method, setMethod] = useState<string>("GET"); 
+
+  const handleMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedMethod = e.target.value; 
+
+    setMethod(selectedMethod);
+  };
 
 
   const paramsFilled = paramsData.some(
@@ -75,10 +86,11 @@ export const HttpRequestForm = () => {
       header.key !== "" || header.value !== "" || header.description !== ""
   );
 
-  const authFieldsFilled = 
-  (authData.authType === "basic_auth" && (authData.username !== "" || authData.password !== "")) ||
-  (authData.authType === "bearer_token" && authData.token !== "");
-  
+  const authFieldsFilled =
+    (authData.authType === "basic_auth" &&
+      (authData.username !== "" || authData.password !== "")) ||
+    (authData.authType === "bearer_token" && authData.token !== "");
+
   const handleParamsChange = (
     updatedParams: SetStateAction<
       { id: string; key: string; value: string; description: string }[]
@@ -96,9 +108,12 @@ export const HttpRequestForm = () => {
   };
 
   const handleAuthChange = (
-    updatedAuth: SetStateAction<
-      { authType: string; username: string; password: string; token: string }
-    >
+    updatedAuth: SetStateAction<{
+      authType: string;
+      username: string;
+      password: string;
+      token: string;
+    }>
   ) => {
     setAuthData(updatedAuth);
   };
@@ -106,13 +121,38 @@ export const HttpRequestForm = () => {
   const handleCodeMirrorChange = (value: string) => {
     setJsonData(value); // Actualiza jsonString con el nuevo valor
   };
-  
-  const handleSend = () => {
-    console.log("Params Data:", paramsData);
-    console.log("Headers Data:", headersData);
-    console.log("Json Data:", jsonData);
-    console.log("auth Data:", authData);
-    
+
+  const handleSend = async () => {
+    setLoading(true);
+    setError(null);
+    setResponse(null);
+
+    try {
+      const startTime = Date.now();
+      const data: any = await makeHttpRequest(
+        url,
+        method,
+        paramsData,
+        headersData,
+        jsonData,
+        authData
+      );
+
+      const endTime = Date.now();
+
+      setResponse({
+        data: data.data,
+        status: data.status,
+        time: endTime - startTime,
+        size: new Blob([JSON.stringify(data)]).size / 1024,
+        headers: {},
+      });
+      console.log('data',data)
+    } catch (error: any) {
+      setError(error.toString());
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -157,6 +197,7 @@ export const HttpRequestForm = () => {
                 }}
                 defaultSelectedKeys={["GET"]}
                 label="Method"
+                onChange={handleMethodChange}
               >
                 {httpMethods.map((httpMethod) => (
                   <SelectItem
@@ -169,10 +210,17 @@ export const HttpRequestForm = () => {
               </Select>
             </>
           }
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
         />
 
-        <Button className="h-[56px]" color="primary" onClick={handleSend}>
-          SEND
+        <Button
+          className="h-[56px]"
+          color="primary"
+          disabled={loading}
+          onClick={handleSend}
+        >
+          {loading ? "Sending..." : "SEND"}
         </Button>
       </div>
       <div className="flex w-full flex-col pt-2">
@@ -182,9 +230,7 @@ export const HttpRequestForm = () => {
             title={
               <div className="flex flex-row items-center gap-1">
                 <p>Params</p>
-                {paramsFilled && (
-                  <CheckIcon color="success" size={8} />
-                )}
+                {paramsFilled && <CheckIcon color="success" size={8} />}
               </div>
             }
           >
@@ -199,11 +245,10 @@ export const HttpRequestForm = () => {
             title={
               <div className="flex flex-row items-center gap-1">
                 <p>Authorization</p>
-                {authFieldsFilled && (
-                  <CheckIcon color="success" size={8} />
-                )}
+                {authFieldsFilled && <CheckIcon color="success" size={8} />}
               </div>
-            }>
+            }
+          >
             <Card>
               <CardBody>
                 <Auth data={authData} onParamsChange={handleAuthChange} />
@@ -215,9 +260,7 @@ export const HttpRequestForm = () => {
             title={
               <div className="flex flex-row items-center gap-1">
                 <p>Headers</p>
-                {headersFilled && (
-                  <CheckIcon color="success" size={8} />
-                )}
+                {headersFilled && <CheckIcon color="success" size={8} />}
               </div>
             }
           >
@@ -230,15 +273,15 @@ export const HttpRequestForm = () => {
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="body" 
+          <Tab
+            key="body"
             title={
               <div className="flex flex-row items-center gap-1">
                 <p>Body</p>
-                {jsonData && (
-                  <CheckIcon color="success" size={8} />
-                )}
+                {jsonData && <CheckIcon color="success" size={8} />}
               </div>
-            }>
+            }
+          >
             <Card>
               <CardBody>
                 <div
@@ -266,7 +309,14 @@ export const HttpRequestForm = () => {
         <h1 className="pb-2">Response:</h1>
         <Card>
           <CardBody>
-            <Response />
+            <Response
+              data={response?.data}
+              headers={response?.headers}
+              size={response?.size}
+              status={response?.status}
+              time={response?.time}
+            />
+            {error && <div className="text-red-500">{error}</div>}
           </CardBody>
         </Card>
       </div>

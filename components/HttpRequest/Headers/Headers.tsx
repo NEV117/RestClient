@@ -97,6 +97,7 @@ export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
               <TableRow key={row.id}>
               <TableCell>
                 <Input
+                  defaultValue="Content-Type"
                   label="Key"
                   size="sm"
                   type="text"
@@ -109,6 +110,7 @@ export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
               </TableCell>
                 <TableCell>
                   <Input
+                  defaultValue="application/json"
                     label="Value"
                     size="sm"
                     type="text"

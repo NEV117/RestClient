@@ -35,6 +35,7 @@ export type SelectItemColor =
   | "default"
   | "primary"
   | "secondary";
+
 export type HttpMethod =
   | "GET"
   | "POST"
@@ -43,7 +44,6 @@ export type HttpMethod =
   | "DELETE"
   | "HEAD"
   | "OPTIONS";
-
 // Mapeo de métodos HTTP a colores
 
 export const httpMethodColors: Record<HttpMethod, SelectItemColor> = {
@@ -76,3 +76,11 @@ export type AuthData = {
   password: string;
   token: string;
 };
+
+export type ResponseState = {
+  data: any;
+  status: number;
+  time: number;
+  size: number;
+  headers: Record<string, string>;
+} | null;
