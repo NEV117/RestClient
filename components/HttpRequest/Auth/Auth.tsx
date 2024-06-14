@@ -36,7 +36,7 @@ export const Auth: React.FC<AuthProps> = ({ data, onParamsChange }) => {
   };
 
   return (
-      <div className="grid grid-cols-10 gap-4 w-full ">
+      <div className=" felx flex-col sm:grid sm:grid-cols-10 gap-4 w-full ">
         <div className="col-span-3">
           <Select
             className="max-full"
@@ -52,7 +52,7 @@ export const Auth: React.FC<AuthProps> = ({ data, onParamsChange }) => {
             ))}
           </Select>
         </div>
-        <div className="col-span-7 flex flex-col space-y-4">
+        <div className="col-span-7 flex flex-col space-y-4 pt-4 sm:pt-0">
           <form action="post">
             {authData.authType === "basic_auth" && (
               <div className="flex flex-col gap-3">
@@ -78,7 +78,11 @@ export const Auth: React.FC<AuthProps> = ({ data, onParamsChange }) => {
             )}
             {authData.authType === "bearer_token" && (
               <Textarea
-                className="h-[90px]"
+                  disableAnimation
+                  disableAutosize
+                  classNames={{
+                    input: "resize-y min-h-[56px]",
+                  }}
                 name="token"
                 placeholder="Bearer token"
                 value={authData.token}

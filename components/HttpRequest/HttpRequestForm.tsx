@@ -269,7 +269,7 @@ export const HttpRequestForm = () => {
             }
           >
             <Card>
-              <CardBody>
+              <CardBody className="max-h-[450px]">
                 <Headers
                   data={headersData}
                   onHeadersChange={handleHeadersChange}

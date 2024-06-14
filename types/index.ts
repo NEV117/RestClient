@@ -9,9 +9,9 @@ export const httpMethods = [
   { key: "POST", label: "POST" },
   { key: "PUT", label: "PUT" },
   { key: "PATCH", label: "PATCH" },
-  { key: "DELETE", label: "DELETE" },
+  { key: "DELETE", label: "DELETE" } /* 
   { key: "HEAD", label: "HEAD" },
-  { key: "OPTIONS", label: "OPTIONS" },
+  { key: "OPTIONS", label: "OPTIONS" }, */,
 ];
 export const authTypes = [
   { key: "no_auth", label: "No Auth" },
@@ -36,14 +36,9 @@ export type SelectItemColor =
   | "primary"
   | "secondary";
 
-export type HttpMethod =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "PATCH"
-  | "DELETE"
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"; /* 
   | "HEAD"
-  | "OPTIONS";
+  | "OPTIONS"; */
 // Mapeo de métodos HTTP a colores
 
 export const httpMethodColors: Record<HttpMethod, SelectItemColor> = {
@@ -51,9 +46,9 @@ export const httpMethodColors: Record<HttpMethod, SelectItemColor> = {
   POST: "warning",
   PUT: "primary",
   PATCH: "secondary",
-  DELETE: "danger",
+  DELETE: "danger" /* 
   HEAD: "primary",
-  OPTIONS: "secondary",
+  OPTIONS: "secondary", */,
 };
 
 export type ParamRow = {

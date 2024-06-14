@@ -59,26 +59,27 @@ export const Params: React.FC<ParamsProps> = ({ data, onParamsChange }) => {
 
   return (
     <>
-      <div className="flex flex-row items-center gap-2">
-        <Button
-          className="max-w-[140px]"
-          color="primary"
-          size="sm"
-          onClick={addRow}
-        >
-          Add
-        </Button>
-        <Button
-          className="max-w-[140px]"
-          color="danger"
-          disabled={rows.length === 1}
-          size="sm"
-          onClick={deleteLastRow}
-        >
-          Delete last row
-        </Button>
-      </div>
-      <br />
+    <div className="flex flex-row items-center gap-2">
+      <Button
+        className="max-w-[140px]"
+        color="primary"
+        size="sm"
+        onClick={addRow}
+      >
+        Add
+      </Button>
+      <Button
+        className="max-w-[140px]"
+        color="danger"
+        disabled={rows.length === 1}
+        size="sm"
+        onClick={deleteLastRow}
+      >
+        Delete last row
+      </Button>
+    </div>
+    <br />
+    <div className="hidden sm:block">
       <Table aria-label="Dynamic table with user-added rows" className="min-w-[500px]">
         <TableHeader>
           <TableColumn>Key</TableColumn>
@@ -114,7 +115,12 @@ export const Params: React.FC<ParamsProps> = ({ data, onParamsChange }) => {
               </TableCell>
               <TableCell>
                 <Textarea
-                  className="h-[56px]"
+                  disableAnimation
+                  disableAutosize
+                  classNames={{
+                    base: "max-w-xs",
+                    input: "resize-y min-h-[56px]",
+                  }}
                   placeholder="Description"
                   size="sm"
                   value={row.description}
@@ -128,6 +134,53 @@ export const Params: React.FC<ParamsProps> = ({ data, onParamsChange }) => {
           ))}
         </TableBody>
       </Table>
-    </>
-  );
+    </div>
+    <div className="block sm:hidden">
+      {rows.map((row) => (
+        <div key={row.id} className="flex flex-col space-y-2 mb-4">
+          <div className="flex flex-col">
+            <Input
+              placeholder="key"
+              size="sm"
+              type="text"
+              value={row.key}
+              variant="bordered"
+              onChange={(e) =>
+                handleInputChange("key", e.target.value, row.id)
+              }
+            />
+          </div>
+          <div className="flex flex-col">
+            <Input
+              placeholder="value"
+              size="sm"
+              type="text"
+              value={row.value}
+              variant="bordered"
+              onChange={(e) =>
+                handleInputChange("value", e.target.value, row.id)
+              }
+            />
+          </div>
+          <div className="flex flex-col">
+            <Textarea
+              disableAnimation
+              disableAutosize
+              classNames={{
+                input: "resize-y min-h-[56px]",
+              }}
+              placeholder="Description"
+              size="sm"
+              value={row.description}
+              variant="bordered"
+              onChange={(e) =>
+                handleInputChange("description", e.target.value, row.id)
+              }
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  </>
+);
 };

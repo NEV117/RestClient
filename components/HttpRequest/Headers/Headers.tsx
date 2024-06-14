@@ -64,29 +64,30 @@ export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
       console.log("Input values:", rows);
     };
    */
-    return (
+    return  (
       <>
-        <div className="flex flex-row items-center gap-2">
-          <Button
-            className="max-w-[140px]"
-            color="primary"
-            size="sm"
-            onClick={addRow}
-          >
-            Add
-          </Button>
-          <Button
-            className="max-w-[140px]"
-            color="danger"
-            disabled={rows.length === 1}
-            size="sm"
-            onClick={deleteLastRow}
-          >
-            Delete last row
-          </Button>
-        </div>
-        <br />
-        <Table isCompact aria-label="Dynamic table with user-added rows" className="min-w-[500px]">
+      <div className="flex flex-row items-center gap-2">
+        <Button
+          className="max-w-[140px]"
+          color="primary"
+          size="sm"
+          onClick={addRow}
+        >
+          Add
+        </Button>
+        <Button
+          className="max-w-[140px]"
+          color="danger"
+          disabled={rows.length === 1}
+          size="sm"
+          onClick={deleteLastRow}
+        >
+          Delete last row
+        </Button>
+      </div>
+      <br />
+      <div className="hidden sm:block">
+        <Table aria-label="Dynamic table with user-added rows" className="min-w-[500px]">
           <TableHeader>
             <TableColumn>Key</TableColumn>
             <TableColumn>Value</TableColumn>
@@ -95,22 +96,20 @@ export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
-              <TableCell>
-                <Input
-                  defaultValue="Content-Type"
-                  label="Key"
-                  size="sm"
-                  type="text"
-                  value={row.key}
-                  variant="bordered"
-                  onChange={(e) =>
-                    handleInputChange("key", e.target.value, row.id)
-                  }
-                />
-              </TableCell>
                 <TableCell>
                   <Input
-                  defaultValue="application/json"
+                    label="Key"
+                    size="sm"
+                    type="text"
+                    value={row.key}
+                    variant="bordered"
+                    onChange={(e) =>
+                      handleInputChange("key", e.target.value, row.id)
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <Input
                     label="Value"
                     size="sm"
                     type="text"
@@ -123,7 +122,12 @@ export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
                 </TableCell>
                 <TableCell>
                   <Textarea
-                    className="h-[56px] text-sm"
+                    disableAnimation
+                    disableAutosize
+                    classNames={{
+                      base: "max-w-xs",
+                      input: "resize-y min-h-[56px]",
+                    }}
                     placeholder="Description"
                     size="sm"
                     value={row.description}
@@ -137,6 +141,53 @@ export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
             ))}
           </TableBody>
         </Table>
-      </>
-    );
+      </div>
+      <div className="block sm:hidden">
+        {rows.map((row) => (
+          <div key={row.id} className="flex flex-col space-y-2 mb-4">
+            <div className="flex flex-col">
+              <Input
+                placeholder="key"
+                size="sm"
+                type="text"
+                value={row.key}
+                variant="bordered"
+                onChange={(e) =>
+                  handleInputChange("key", e.target.value, row.id)
+                }
+              />
+            </div>
+            <div className="flex flex-col">
+              <Input
+                placeholder="value"
+                size="sm"
+                type="text"
+                value={row.value}
+                variant="bordered"
+                onChange={(e) =>
+                  handleInputChange("value", e.target.value, row.id)
+                }
+              />
+            </div>
+            <div className="flex flex-col">
+              <Textarea
+                disableAnimation
+                disableAutosize
+                classNames={{
+                  input: "resize-y min-h-[56px]",
+                }}
+                placeholder="Description"
+                size="sm"
+                value={row.description}
+                variant="bordered"
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value, row.id)
+                }
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
   };

@@ -1,8 +1,8 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Web Client",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "Rest Client",
+  description: "",
   navItems: [
     {
       label: "Home",
