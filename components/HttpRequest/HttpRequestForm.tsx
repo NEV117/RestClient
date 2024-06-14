@@ -30,7 +30,6 @@ import {
   ResponseState,
   httpMethodColors,
   httpMethods,
-  jsonString,
 } from "@/types";
 import { CheckIcon } from "@/public/svg/cheackbox";
 import { makeHttpRequest } from "@/actions";
@@ -49,9 +48,10 @@ export const HttpRequestForm = () => {
   const [headersData, setHeadersData] = useState<HeaderRow[]>([
     {
       id: "1",
-      key: "",
-      value: "",
-      description: "",
+      key: "Content-Type",
+      value: "application/json",
+      description:
+        "recomended default header in case you're goint to mak http request",
     },
   ]);
 
@@ -62,19 +62,18 @@ export const HttpRequestForm = () => {
     token: "",
   });
 
-  const [jsonData, setJsonData] = useState(jsonString);
+  const [jsonData, setJsonData] = useState('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<ResponseState>(null);
   const [error, setError] = useState(null);
   const [url, setUrl] = useState("");
-  const [method, setMethod] = useState<string>("GET"); 
+  const [method, setMethod] = useState<string>("GET");
 
   const handleMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedMethod = e.target.value; 
+    const selectedMethod = e.target.value;
 
     setMethod(selectedMethod);
   };
-
 
   const paramsFilled = paramsData.some(
     (param) =>
@@ -126,6 +125,11 @@ export const HttpRequestForm = () => {
     setLoading(true);
     setError(null);
     setResponse(null);
+    if (!url) {
+      setLoading(false);
+
+      return;
+    }
 
     try {
       const startTime = Date.now();
@@ -145,9 +149,8 @@ export const HttpRequestForm = () => {
         status: data.status,
         time: endTime - startTime,
         size: new Blob([JSON.stringify(data)]).size / 1024,
-        headers: {},
+        headers:  data.headers,
       });
-      console.log('data',data)
     } catch (error: any) {
       setError(error.toString());
     } finally {
@@ -212,6 +215,7 @@ export const HttpRequestForm = () => {
           }
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          onClear={() => setUrl("")}
         />
 
         <Button
@@ -312,6 +316,7 @@ export const HttpRequestForm = () => {
             <Response
               data={response?.data}
               headers={response?.headers}
+              loading={loading}
               size={response?.size}
               status={response?.status}
               time={response?.time}

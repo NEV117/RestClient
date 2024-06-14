@@ -18,7 +18,7 @@ export const authTypes = [
   { key: "basic_auth", label: "Basic Auth" },
   { key: "bearer_token", label: "Bearer Token" },
 ];
-export const jsonObject = {
+/* export const jsonObject = {
   date: "2024-04-10",
   hour: "09:00 AM",
   serviceId: 1,
@@ -26,7 +26,7 @@ export const jsonObject = {
   barberShopNit: "Mario's",
 };
 
-export const jsonString = JSON.stringify(jsonObject, null, 2);
+export const jsonString = JSON.stringify(jsonObject, null, 2); */
 
 export type SelectItemColor =
   | "success"

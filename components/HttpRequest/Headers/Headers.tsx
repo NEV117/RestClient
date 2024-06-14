@@ -60,10 +60,10 @@ export const Headers: React.FC<HeadersProps> = ({ data, onHeadersChange }) => {
       setRows(updatedRows);
     };
   
-    const handleAccept = () => {
+    /* const handleAccept = () => {
       console.log("Input values:", rows);
     };
-  
+   */
     return (
       <>
         <div className="flex flex-row items-center gap-2">

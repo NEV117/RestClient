@@ -15,7 +15,12 @@ export const makeHttpRequest = async (
     const axiosConfig: AxiosRequestConfig = {
       method: method.toUpperCase(),
       url: url,
-    };
+    };/* 
+    console.log('---------request data---------------')
+    console.log('paramsData',paramsData)
+    console.log('headersData',headersData)
+    console.log('jsonData', jsonData)
+    console.log('authData', authData) */
   
     // Agregar parámetros si están definidos
     if (paramsData) {
@@ -44,7 +49,7 @@ export const makeHttpRequest = async (
   
     // Agregar autenticación si está definida
     if (authData) {
-      if (authData.authType === 'bearer' && authData.token) {
+      if (authData.authType === "bearer_token" && authData.token) {
         axiosConfig.headers = {
           ...axiosConfig.headers,
           Authorization: `Bearer ${authData.token}`,
@@ -61,12 +66,13 @@ export const makeHttpRequest = async (
       // Realizar la solicitud HTTP usando axios
       const response = await axios(axiosConfig);
 
+
       return response;
     } catch (error:any) {
       // Manejo de errores
       console.error('Error making HTTP request:', error);
 
-      error.response.data = error.message
+      error.response.data = error
 
       return error.response;
     }
