@@ -59,6 +59,24 @@ export const Response = ({ loading, data, status, time, size, headers }: Respons
           <Card>
             <CardBody>
               <div
+                className="block sm:hidden"
+                style={{
+                  borderRadius: "10px",
+                  overflow: "auto",
+                  maxHeight: `238px`,
+                }}
+              >
+                <CodeMirror
+                  readOnly
+                  extensions={[javascript({ jsx: true })]}
+                  height="238px"
+                  theme={Theme2}
+                  value={loading ?  `Sending Request${dots}` : JSON.stringify(data, null, 2)}
+                />
+              </div>
+              
+              <div
+                className="hidden sm:block"
                 style={{
                   borderRadius: "10px",
                   overflow: "auto",
